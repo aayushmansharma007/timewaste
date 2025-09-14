@@ -20,24 +20,27 @@ function Home() {
 
   async function getImages() {
     window.scrollTo(0, 0);
-    let result = await axios({
-      url: process.env.REACT_APP_BASE_URL,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      data: {
-        query: TrendingAnimeQuery,
-        variables: {
-          page: 1,
-          perPage: 15,
+    try {
+      let result = await axios({
+        url: process.env.REACT_APP_BASE_URL,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-      },
-    }).catch((err) => {
-      console.log(err);
-    });
-    setImages(result.data.data.Page.media);
+        data: {
+          query: TrendingAnimeQuery,
+          variables: {
+            page: 1,
+            perPage: 15,
+          },
+        },
+      });
+      setImages(result.data.data.Page.media);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setImages([]);
+    }
     setLoading(false);
     document.title = "Miyou - Watch Anime Free Online With English Sub and Dub";
   }
